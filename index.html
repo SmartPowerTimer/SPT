@@ -198,6 +198,11 @@
             color: white;
         }
         
+        .btn-payment {
+            background: #2196f3;
+            color: white;
+        }
+        
         .appliance-list {
             margin-top: 15px;
         }
@@ -379,6 +384,107 @@
             font-size: 12px;
             width: 30px;
         }
+        
+        /* Fee specific styles */
+        .fee-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .fee-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .fee-title {
+            font-weight: bold;
+            color: #1a237e;
+            font-size: 16px;
+        }
+        
+        .fee-amount {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .fee-description {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .payment-method {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .payment-method.selected {
+            border-color: #2196f3;
+            background-color: #e3f2fd;
+        }
+        
+        .payment-method i {
+            font-size: 24px;
+            margin-bottom: 5px;
+            display: block;
+        }
+        
+        .subscription-status {
+            background: #e8f5e9;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .active-status {
+            background: #e8f5e9;
+            color: #4caf50;
+        }
+        
+        .inactive-status {
+            background: #ffebee;
+            color: #f44336;
+        }
+        
+        .payment-history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .payment-date {
+            color: #666;
+        }
+        
+        .payment-amount {
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -411,11 +517,13 @@
             <div class="tab" onclick="switchTab('schedule')">Schedule</div>
             <div class="tab" onclick="switchTab('energy')">Energy</div>
             <div class="tab" onclick="switchTab('sim')">SIM Card</div>
+            <div class="tab" onclick="switchTab('fees')">Fees</div>
         </div>
         
         <div class="content-area">
             <!-- Control Tab -->
             <div id="control-tab" class="tab-content">
+                <!-- Existing control content remains the same -->
                 <div class="control-card">
                     <div class="card-title">
                         <i class="fas fa-power-off"></i>
@@ -494,6 +602,7 @@
             
             <!-- Schedule Tab -->
             <div id="schedule-tab" class="tab-content hidden">
+                <!-- Existing schedule content remains the same -->
                 <div class="control-card">
                     <div class="card-title">
                         <i class="fas fa-clock"></i>
@@ -566,6 +675,7 @@
             
             <!-- Energy Tab -->
             <div id="energy-tab" class="tab-content hidden">
+                <!-- Existing energy content remains the same -->
                 <div class="control-card">
                     <div class="card-title">
                         <i class="fas fa-bolt"></i>
@@ -642,6 +752,7 @@
             
             <!-- SIM Card Tab -->
             <div id="sim-tab" class="tab-content hidden">
+                <!-- Existing SIM content remains the same -->
                 <div class="control-card">
                     <div class="card-title">
                         <i class="fas fa-sim-card"></i>
@@ -708,6 +819,113 @@
                     <button class="btn btn-sim" style="width: 100%; margin-top: 10px;" onclick="checkBalance()">
                         <i class="fas fa-sync"></i> Check Balance & Status
                     </button>
+                </div>
+            </div>
+            
+            <!-- Fees Tab -->
+            <div id="fees-tab" class="tab-content hidden">
+                <div class="control-card">
+                    <div class="card-title">
+                        <i class="fas fa-credit-card"></i>
+                        Subscription & Fees
+                    </div>
+                    
+                    <div class="subscription-status">
+                        <div style="display: flex; justify-content: space-between; align-items: center;">
+                            <div>
+                                <strong>Current Status:</strong>
+                                <span class="status-badge active-status" id="subscription-status">ACTIVE</span>
+                            </div>
+                            <div id="expiry-date">Expires: 15 Dec 2025</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="fee-card">
+                    <div class="fee-header">
+                        <div class="fee-title">Activation Fee</div>
+                        <div class="fee-amount">₹499</div>
+                    </div>
+                    <div class="fee-description">
+                        One-time activation fee for setting up your Smart Power Timer device and account.
+                    </div>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                            <i class="fas fa-mobile-alt"></i>
+                            UPI
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('card')">
+                            <i class="fas fa-credit-card"></i>
+                            Card
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                            <i class="fas fa-university"></i>
+                            Net Banking
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('wallet')">
+                            <i class="fas fa-wallet"></i>
+                            Wallet
+                        </div>
+                    </div>
+                    <button class="btn btn-payment" style="width: 100%;" onclick="payActivationFee()" id="activation-pay-btn">
+                        <i class="fas fa-lock"></i> Pay Activation Fee
+                    </button>
+                </div>
+                
+                <div class="fee-card">
+                    <div class="fee-header">
+                        <div class="fee-title">Annual Subscription</div>
+                        <div class="fee-amount">₹299/year</div>
+                    </div>
+                    <div class="fee-description">
+                        Yearly subscription for continued access to premium features, cloud services, and updates.
+                    </div>
+                    <div class="payment-methods">
+                        <div class="payment-method" onclick="selectPaymentMethod('upi')">
+                            <i class="fas fa-mobile-alt"></i>
+                            UPI
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('card')">
+                            <i class="fas fa-credit-card"></i>
+                            Card
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('netbanking')">
+                            <i class="fas fa-university"></i>
+                            Net Banking
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod('wallet')">
+                            <i class="fas fa-wallet"></i>
+                            Wallet
+                        </div>
+                    </div>
+                    <button class="btn btn-payment" style="width: 100%;" onclick="payAnnualFee()" id="annual-pay-btn">
+                        <i class="fas fa-sync-alt"></i> Renew Annual Subscription
+                    </button>
+                </div>
+                
+                <div class="control-card">
+                    <div class="card-title">
+                        <i class="fas fa-history"></i>
+                        Payment History
+                    </div>
+                    
+                    <div id="payment-history">
+                        <div class="payment-history-item">
+                            <div>
+                                <div>Annual Subscription</div>
+                                <div class="payment-date">15 Dec 2024</div>
+                            </div>
+                            <div class="payment-amount">₹299.00</div>
+                        </div>
+                        
+                        <div class="payment-history-item">
+                            <div>
+                                <div>Activation Fee</div>
+                                <div class="payment-date">15 Dec 2023</div>
+                            </div>
+                            <div class="payment-amount">₹499.00</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -828,6 +1046,83 @@
                 chartContainer.appendChild(label);
                 chartContainer.appendChild(valueLabel);
             }
+        }
+        
+        // Fee payment functions
+        let selectedPaymentMethod = '';
+        
+        function selectPaymentMethod(method) {
+            selectedPaymentMethod = method;
+            
+            // Update UI to show selected method
+            document.querySelectorAll('.payment-method').forEach(el => {
+                el.classList.remove('selected');
+            });
+            
+            event.currentTarget.classList.add('selected');
+        }
+        
+        function payActivationFee() {
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method first');
+                return;
+            }
+            
+            alert(`Paying ₹499 Activation Fee via ${selectedPaymentMethod.toUpperCase()}...\nSimulating payment processing...`);
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                alert('Payment Successful! Your device is now activated.');
+                document.getElementById('activation-pay-btn').textContent = 'Activated';
+                document.getElementById('activation-pay-btn').disabled = true;
+                document.getElementById('activation-pay-btn').classList.remove('btn-payment');
+                document.getElementById('activation-pay-btn').classList.add('btn-on');
+                
+                // Add to payment history
+                const historyContainer = document.getElementById('payment-history');
+                const newPayment = document.createElement('div');
+                newPayment.className = 'payment-history-item';
+                newPayment.innerHTML = `
+                    <div>
+                        <div>Activation Fee</div>
+                        <div class="payment-date">${new Date().toDateString()}</div>
+                    </div>
+                    <div class="payment-amount">₹499.00</div>
+                `;
+                historyContainer.prepend(newPayment);
+            }, 2000);
+        }
+        
+        function payAnnualFee() {
+            if (!selectedPaymentMethod) {
+                alert('Please select a payment method first');
+                return;
+            }
+            
+            alert(`Paying ₹299 Annual Fee via ${selectedPaymentMethod.toUpperCase()}...\nSimulating payment processing...`);
+            
+            // Simulate payment processing
+            setTimeout(() => {
+                alert('Payment Successful! Your subscription has been renewed for 1 year.');
+                
+                // Update expiry date (1 year from now)
+                const nextYear = new Date();
+                nextYear.setFullYear(nextYear.getFullYear() + 1);
+                document.getElementById('expiry-date').textContent = `Expires: ${nextYear.toDateString()}`;
+                
+                // Add to payment history
+                const historyContainer = document.getElementById('payment-history');
+                const newPayment = document.createElement('div');
+                newPayment.className = 'payment-history-item';
+                newPayment.innerHTML = `
+                    <div>
+                        <div>Annual Subscription</div>
+                        <div class="payment-date">${new Date().toDateString()}</div>
+                    </div>
+                    <div class="payment-amount">₹299.00</div>
+                `;
+                historyContainer.prepend(newPayment);
+            }, 2000);
         }
         
         // Simulate live data updates
